@@ -6,7 +6,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 # 
-#        http://www.apache.org/licenses/LICENSE-2.0
+#        https://www.apache.org/licenses/LICENSE-2.0
 # 
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,17 +16,10 @@
 #
 # start_akraino_portal.sh - start the Akraino portal on the regional controller
 #
-
-USER=jenkins
-PASSWORD=ZFXsSJjs
-DB_IMAGE="nexus3.att-akraino.org:10001/akraino_schema_db:$1"
-WF_IMAGE=nexus3.att-akraino.org:10001/akraino-camunda-workflow-engine:$2
-PT_IMAGE=nexus3.att-akraino.org:10001/akraino-portal:$3
+DB_IMAGE="nexus3.akraino.org:10003/akraino_schema_db:$1"
+WF_IMAGE=nexus3.akraino.org:10003/akraino-camunda-workflow-engine:$2
+PT_IMAGE=nexus3.akraino.org:10003/akraino-portal:$3
 # Login if needed
-if [ -n "$USER" ]
-then
-	docker login --username "$USER" --password "$PASSWORD" nexus3.att-akraino.org:10001
-fi
 
 # PostgreSQL
 docker run \
@@ -40,7 +33,7 @@ docker run \
 	$DB_IMAGE
 
 #ldap
-docker run -d -p 10389:10389  nexus3.att-akraino.org:10001/akrainoldap:1.0
+docker run -d -p 10389:10389  nexus.akraino.org:10001/akrainoldap:1.0
 #intialize DB
 sleep 30
 docker exec postgres /bin/bash -c "cp -rf /akraino-j2templates/* /var/lib/postgresql/data/"
@@ -70,14 +63,14 @@ docker run \
 TEMPEST_HOME="/opt/akraino/tempest"
 YAML_BUILDS_HOME="/opt/akraino/yaml_builds"
 # To get latest artifacts from nexus
-version=`curl -s http://nexus3.att-akraino.org/repository/maven-public/org/akraino/tempest/tempest-master/maven-metadata.xml | grep version | sed "s/.*<version>\([^<]*\)<\/version>.*/\1/" | head -4 | tail -1`
-build=`curl -s  http://nexus3.att-akraino.org/repository/maven-public/org/akraino/tempest/tempest-master/$version/maven-metadata.xml | grep '<value>' | head -1 | sed "s/.*<value>\([^<]*\)<\/value>.*/\1/"`
-tar=tempest-master-$build.tar
-path="http://nexus3.att-akraino.org/repository/maven-public/org/akraino/tempest/tempest-master/$version"
+version=`curl -s https://nexus.akraino.org/content/repositories/snapshots/org/akraino/test_automation/test_automation/maven-metadata.xml | grep version | sed "s/.*<version>\([^<]*\)<\/version>.*/\1/" | head -4 | tail -1`
+build=`curl -s  https://nexus.akraino.org/content/repositories/snapshots/org/akraino/test_automation/test_automation/$version/maven-metadata.xml | grep '<value>' | head -1 | sed "s/.*<value>\([^<]*\)<\/value>.*/\1/"`
+tar=test_automation-$build.tgz
+path="https://nexus.akraino.org/content/repositories/snapshots/org/akraino/test_automation/test_automation/$version"
 TEMPEST_URL="$path/$tar"
-#TEMPEST_URL="http://nexus3.att-akraino.org/repository/maven-public/org/akraino/tempest/tempest-master/0.0.1-SNAPSHOT/tempest-master-0.0.1-20180611.172116-1.tar"
+#TEMPEST_URL="https://nexus.akraino.org/content/repositories/snapshots/org/akraino/tempest/tempest-master/0.0.1-SNAPSHOT/tempest-master-0.0.1-20180611.172116-1.tar"
 
-echo "Setting up tempest repository"
+echo "Setting up tempest content/repositories"
 #checking if directory exist or not
 if [ -d $TEMPEST_HOME ]; then
    rm -rf $TEMPEST_HOME
@@ -86,18 +79,18 @@ else
    mkdir -p $TEMPEST_HOME
 fi
 
-wget -q $TEMPEST_URL -O /opt/akraino/tempest-master.tar
-tar -xf /opt/akraino/tempest-master.tar --strip-components=1 -C $TEMPEST_HOME
-rm -rf /opt/akraino/tempest-master.tar
+wget -q $TEMPEST_URL -O /opt/akraino/test_automation.tgz
+tar -xzf /opt/akraino/test_automation.tgz -C $TEMPEST_HOME
+rm -rf /opt/akraino/test_automation.tgz
 
 # To get latest artifacts from nexus
-yaml_builds_version=`curl -s http://nexus3.att-akraino.org/repository/maven-public/org/akraino/yaml_builds/yaml_builds-master/maven-metadata.xml | grep version | sed "s/.*<version>\([^<]*\)<\/version>.*/\1/" | head -4 | tail -1`
-yaml_builds_build=`curl -s  http://nexus3.att-akraino.org/repository/maven-public/org/akraino/yaml_builds/yaml_builds-master/$yaml_builds_version/maven-metadata.xml | grep '<value>' | head -1 | sed "s/.*<value>\([^<]*\)<\/value>.*/\1/"`
-yaml_builds_tar=yaml_builds-master-$yaml_builds_build.tar
-yaml_builds_path="http://nexus3.att-akraino.org/repository/maven-public/org/akraino/yaml_builds/yaml_builds-master/$yaml_builds_version"
+yaml_builds_version=`curl -s https://nexus.akraino.org/content/repositories/snapshots/org/akraino/yaml_builds/yaml_builds/maven-metadata.xml | grep version | sed "s/.*<version>\([^<]*\)<\/version>.*/\1/" | head -4 | tail -1`
+yaml_builds_build=`curl -s  https://nexus.akraino.org/content/repositories/snapshots/org/akraino/yaml_builds/yaml_builds/$yaml_builds_version/maven-metadata.xml | grep '<value>' | head -1 | sed "s/.*<value>\([^<]*\)<\/value>.*/\1/"`
+yaml_builds_tar=yaml_builds-$yaml_builds_build.tgz
+yaml_builds_path="https://nexus.akraino.org/content/repositories/snapshots/org/akraino/yaml_builds/yaml_builds/$yaml_builds_version"
 YAML_BUILDS_URL="$yaml_builds_path/$yaml_builds_tar"
 
-echo "Setting up yaml builds repository"
+echo "Setting up yaml builds content/repositories"
 #checking if directory exist or not
 if [ -d $YAML_BUILDS_HOME ]; then
    rm -rf $YAML_BUILDS_HOME
@@ -106,19 +99,19 @@ else
    mkdir -p $YAML_BUILDS_HOME
 fi
 
-wget -q $YAML_BUILDS_URL -O /opt/akraino/yaml_builds-master.tar
-tar -xf /opt/akraino/yaml_builds-master.tar --strip-components=1 -C $YAML_BUILDS_HOME
-rm -rf /opt/akraino/yaml_builds-master.tar
+wget -q $YAML_BUILDS_URL -O /opt/akraino/yaml_builds.tgz
+tar -xzf /opt/akraino/yaml_builds.tgz  -C $YAML_BUILDS_HOME
+rm -rf /opt/akraino/yaml_builds.tgz
 
 
 ONAP_HOME="/opt/akraino/onap"
-onap_version=`curl -s http://nexus3.att-akraino.org/repository/maven-public/org/akraino/onap/onap-amsterdam-regional-controller/maven-metadata.xml | grep version | sed "s/.*<version>\([^<]*\)<\/version>.*/\1/" | head -4 | tail -1`
-onap_build=`curl -s  http://nexus3.att-akraino.org/repository/maven-public/org/akraino/onap/onap-amsterdam-regional-controller/$onap_version/maven-metadata.xml | grep '<value>' | head -1 | sed "s/.*<value>\([^<]*\)<\/value>.*/\1/"`
-onap_tar=onap-master-$onap_build.tar
-onap_path="http://nexus3.att-akraino.org/repository/maven-public/org/akraino/onap/onap-amsterdam-regional-controller/$onap_version"
+onap_version=`curl -s https://nexus.akraino.org/content/repositories/snapshots/org/akraino/addon-onap/onap-amsterdam-regional-controller-master/maven-metadata.xml | grep version | sed "s/.*<version>\([^<]*\)<\/version>.*/\1/" | head -4 | tail -1`
+onap_build=`curl -s  https://nexus.akraino.org/content/repositories/snapshots/org/akraino/addon-onap/onap-amsterdam-regional-controller-master/$onap_version/maven-metadata.xml | grep '<value>' | head -1 | sed "s/.*<value>\([^<]*\)<\/value>.*/\1/"`
+onap_tar=onap-amsterdam-regional-controller-master-$onap_build.tgz
+onap_path="https://nexus.akraino.org/content/repositories/snapshots/org/akraino/addon-onap/onap-amsterdam-regional-controller-master/$onap_version"
 ONAP_URL="$onap_path/$onap_tar"
 
-echo "Setting up ONAP repository"
+echo "Setting up ONAP content/repositories"
 #checking if directory exist or not
 if [ -d $ONAP_HOME ]; then
    rm -rf $ONAP_HOME
@@ -126,18 +119,18 @@ if [ -d $ONAP_HOME ]; then
 else
    mkdir -p $ONAP_HOME
 fi
-wget -q $ONAP_URL -O /opt/akraino/onap-master.tar
-tar -xf /opt/akraino/onap-master.tar --strip-components=1 -C $ONAP_HOME
-rm -rf /opt/akraino/onap-master.tar
+wget -q $ONAP_URL -O /opt/akraino/onap.tgz
+tar -xzf /opt/akraino/onap.tgz  -C $ONAP_HOME
+rm -rf /opt/akraino/onap.tgz
 
 SAMPLE_VNF="/opt/akraino/sample_vnf"
-sample_vnf_version=`curl -s http://nexus3.att-akraino.org/repository/maven-public/org/akraino/sample_vnf/sample_vnf-master/maven-metadata.xml | grep version | sed "s/.*<version>\([^<]*\)<\/version>.*/\1/" | head -4 | tail -1`
-sample_vnf_build=`curl -s  http://nexus3.att-akraino.org/repository/maven-public/org/akraino/sample_vnf/sample_vnf-master/$sample_vnf_version/maven-metadata.xml | grep '<value>' | head -1 | sed "s/.*<value>\([^<]*\)<\/value>.*/\1/"`
-sample_vnf_tar=sample_vnf-master-$sample_vnf_build.tar
-sample_vnf_path="http://nexus3.att-akraino.org/repository/maven-public/org/akraino/sample_vnf/sample_vnf-master/$sample_vnf_version"
+sample_vnf_version=`curl -s https://nexus.akraino.org/content/repositories/snapshots/org/akraino/sample_vnf/sample_vnf/maven-metadata.xml | grep version | sed "s/.*<version>\([^<]*\)<\/version>.*/\1/" | head -4 | tail -1`
+sample_vnf_build=`curl -s  https://nexus.akraino.org/content/repositories/snapshots/org/akraino/sample_vnf/sample_vnf/$sample_vnf_version/maven-metadata.xml | grep '<value>' | head -1 | sed "s/.*<value>\([^<]*\)<\/value>.*/\1/"`
+sample_vnf_tar=sample_vnf-$sample_vnf_build.tgz
+sample_vnf_path="https://nexus.akraino.org/content/repositories/snapshots/org/akraino/sample_vnf/sample_vnf/$sample_vnf_version"
 SAMPLE_VNF_URL="$sample_vnf_path/$sample_vnf_tar"
 
-echo "Setting up sample vnf repository"
+echo "Setting up sample vnf content/repositories"
 #checking if directory exist or not
 if [ -d $SAMPLE_VNF ]; then
    rm -rf $SAMPLE_VNF
@@ -146,18 +139,18 @@ else
    mkdir -p $SAMPLE_VNF
 fi
 
-wget -q $SAMPLE_VNF_URL -O /opt/akraino/sample_vnf-master.tar
-tar -xf /opt/akraino/sample_vnf-master.tar --strip-components=1 -C $SAMPLE_VNF
-rm -rf /opt/akraino/sample_vnf-master.tar
+wget -q $SAMPLE_VNF_URL -O /opt/akraino/sample_vnf.tgz
+tar -xzf /opt/akraino/sample_vnf.tgz -C $SAMPLE_VNF
+rm -rf /opt/akraino/sample_vnf.tgz
 
 AIRSHIPINABOTTLE="/opt/akraino/airshipinabottle_deploy"
-airshipinabottle_deploy_version=`curl -s http://nexus3.att-akraino.org/repository/maven-public/org/akraino/airshipinabottle_deploy/airshipinabottle_deploy/maven-metadata.xml | grep version | sed "s/.*<version>\([^<]*\)<\/version>.*/\1/" | head -4 | tail -1`
-airshipinabottle_deploy_build=`curl -s  http://nexus3.att-akraino.org/repository/maven-public/org/akraino/airshipinabottle_deploy/airshipinabottle_deploy/$airshipinabottle_deploy_version/maven-metadata.xml | grep '<value>' | head -1 | sed "s/.*<value>\([^<]*\)<\/value>.*/\1/"`
-airshipinabottle_deploy_tar=airshipinabottle_deploy-$airshipinabottle_deploy_build.tar
-airshipinabottle_deploy_path="http://nexus3.att-akraino.org/repository/maven-public/org/akraino/airshipinabottle_deploy/airshipinabottle_deploy/$airshipinabottle_deploy_version"
+airshipinabottle_deploy_version=`curl -s https://nexus.akraino.org/content/repositories/snapshots/org/akraino/airshipinabottle_deploy/airshipinabottle_deploy/maven-metadata.xml | grep version | sed "s/.*<version>\([^<]*\)<\/version>.*/\1/" | head -4 | tail -1`
+airshipinabottle_deploy_build=`curl -s  https://nexus.akraino.org/content/repositories/snapshots/org/akraino/airshipinabottle_deploy/airshipinabottle_deploy/$airshipinabottle_deploy_version/maven-metadata.xml | grep '<value>' | head -1 | sed "s/.*<value>\([^<]*\)<\/value>.*/\1/"`
+airshipinabottle_deploy_tar=airshipinabottle_deploy-$airshipinabottle_deploy_build.tgz
+airshipinabottle_deploy_path="https://nexus.akraino.org/content/repositories/snapshots/org/akraino/airshipinabottle_deploy/airshipinabottle_deploy/$airshipinabottle_deploy_version"
 AIRSHIPINABOTTLE_URL="$airshipinabottle_deploy_path/$airshipinabottle_deploy_tar"
 
-echo "Setting up airshipinabottle repository"
+echo "Setting up airshipinabottle content/repositories"
 #checking if directory exist or not
 if [ -d $AIRSHIPINABOTTLE ]; then
    rm -rf $AIRSHIPINABOTTLE
@@ -166,9 +159,9 @@ else
    mkdir -p $AIRSHIPINABOTTLE
 fi
 
-wget -q $AIRSHIPINABOTTLE_URL -O /opt/akraino/airshipinabottle_deploy.tar
-tar -xf /opt/akraino/airshipinabottle_deploy.tar --strip-components=1 -C $AIRSHIPINABOTTLE
-rm -rf /opt/akraino/airshipinabottle_deploy.tar
+wget -q $AIRSHIPINABOTTLE_URL -O /opt/akraino/airshipinabottle_deploy.tgz
+tar -xzf /opt/akraino/airshipinabottle_deploy.tgz -C $AIRSHIPINABOTTLE
+rm -rf /opt/akraino/airshipinabottle_deploy.tgz
 
 
 echo "SUCCESS:  Portal install completed"
