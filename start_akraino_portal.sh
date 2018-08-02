@@ -33,8 +33,38 @@ docker run \
 	$DB_IMAGE
 
 #ldap
-docker run --name akraino_ldap -d -p 10389:10389 -e APACHEDS_INSTANCE=akraion -v /root/AECPortalMgmt/WEB-INF/classes/config.ldif:/bootstrap/conf/config.ldif:ro  openmicroscopy/apacheds
-docker cp /root/AECPortalMgmt/WEB-INF/classes/akrainousers.ldif akraino_ldap:/bootstrap/conf
+LDAP_FILE_HOME="/opt/akraino/LDAP_FILES"
+# To get latest artifacts from nexus
+apt-get install unzip -y
+version=`curl -s https://nexus.akraino.org/content/repositories/snapshots/org/akraino/portal_user_interface/maven-metadata.xml | grep version | sed "s/.*<version>\([^<]*\)<\/version>.*/\1/" | head -4 | tail -1`
+build=`curl -s  https://nexus.akraino.org/content/repositories/snapshots/org/akraino/portal_user_interface/$version/maven-metadata.xml | grep '<value>' | head -1 | sed "s/.*<value>\([^<]*\)<\/value>.*/\1/"`
+tar=portal_user_interface-$build.war
+path="https://nexus.akraino.org/content/repositories/snapshots/org/akraino/portal_user_interface/$version"
+portal_user_interface_url="$path/$tar"
+
+echo "Download ldap ldif files"
+#checking if directory exist or not
+if [ -d $LDAP_FILE_HOME ]; then
+   rm -rf $LDAP_FILE_HOME
+   mkdir -p $LDAP_FILE_HOME
+else
+   mkdir -p $LDAP_FILE_HOME
+fi
+
+wget $portal_user_interface_url -O /tmp/portal_user_interfaces.war
+
+if [[ -d "/tmp/portal_user_interface" ]];
+then
+   rm -rf /tmp/portal_user_interface/*
+else
+   mkdir -p /tmp/portal_user_interface
+fi
+
+unzip /tmp/portal_user_interfaces.war -d /tmp/portal_user_interface
+cp -rf  /tmp/portal_user_interface/WEB-INF/classes/*.ldif $LDAP_FILE_HOME/
+
+docker run --name akraino_ldap -d -p 10389:10389 -e APACHEDS_INSTANCE=akraion -v $LDAP_FILE_HOME/config.ldif:/bootstrap/conf/config.ldif:ro  openmicroscopy/apacheds
+docker cp $LDAP_FILE_HOME/akrainousers.ldif akraino_ldap:/bootstrap/conf
 sleep 15
 docker exec akraino_ldap /bin/bash -c "ldapadd -v -h $4:10389 -c -x -D uid=admin,ou=system -w secret -f /bootstrap/conf/akrainousers.ldif"
 #intialize DB
@@ -48,7 +78,7 @@ docker exec postgres /bin/bash -c "psql -h localhost -p 5432 -U postgres -f /akr
 # Workflow
 docker run \
 	--detach \
-	--publish 8070:8080 \
+	--publish 8073:8080 \
 	--network=bridge \
 	--name akraino-workflow \
 	$WF_IMAGE
@@ -84,6 +114,8 @@ fi
 
 wget -q $TEMPEST_URL -O /opt/akraino/test_automation.tgz
 tar -xzf /opt/akraino/test_automation.tgz -C $TEMPEST_HOME
+#mv $TEMPEST_HOME/openstack_tempest/* $TEMPEST_HOME/
+#rm -rf $TEMPEST_HOME/openstack_tempest
 rm -rf /opt/akraino/test_automation.tgz
 
 # To get latest artifacts from nexus
