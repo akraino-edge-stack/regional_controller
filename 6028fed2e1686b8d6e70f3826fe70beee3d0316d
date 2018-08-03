@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f67f43c4_15ea4f04",
+        "filename": "start_akraino_portal.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 45
+      },
+      "writtenOn": "2018-08-03T18:38:40Z",
+      "side": 1,
+      "message": "this doesn\u0027t look right?!  Does it belong as a part of a docker command?",
+      "revId": "6028fed2e1686b8d6e70f3826fe70beee3d0316d",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": false
+    }
+  ]
+}
