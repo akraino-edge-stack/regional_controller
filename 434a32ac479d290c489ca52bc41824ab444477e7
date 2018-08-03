@@ -1,0 +1,174 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0a0489de_e8e0963e",
+        "filename": "start_akraino_portal.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 45
+      },
+      "writtenOn": "2018-08-03T14:42:04Z",
+      "side": 1,
+      "message": "Will these URL\u0027s work?  I\u0027m not sure, I haven\u0027t been able to get them to work.\n\nAlso, recommend putting https://nexus.akraino.org into an env variable $NEXUS_URL so it can be easily changed",
+      "revId": "434a32ac479d290c489ca52bc41824ab444477e7",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "59658358_187158ba",
+        "filename": "start_akraino_portal.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 45
+      },
+      "writtenOn": "2018-08-03T14:42:04Z",
+      "side": 1,
+      "message": "Please add a comment describing the significance of this IP address. I *think* I know why you are doing this this way, but it should be spelled out",
+      "revId": "434a32ac479d290c489ca52bc41824ab444477e7",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b98611fe_fb75d5e1",
+        "filename": "start_akraino_portal.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 45
+      },
+      "writtenOn": "2018-08-03T14:42:04Z",
+      "side": 1,
+      "message": "URL contains \u0026, so this needs to be enclosed in double quotes.",
+      "revId": "434a32ac479d290c489ca52bc41824ab444477e7",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1687cb67_bd1a09fa",
+        "filename": "start_akraino_portal.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 45
+      },
+      "writtenOn": "2018-08-03T14:42:04Z",
+      "side": 1,
+      "message": "indentation needs to be fixed (line 65,66)",
+      "revId": "434a32ac479d290c489ca52bc41824ab444477e7",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f8784033_5b88e300",
+        "filename": "start_akraino_portal.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 45
+      },
+      "writtenOn": "2018-08-03T14:42:04Z",
+      "side": 1,
+      "message": "URL contains \u0026, so this needs to be enclosed in double quotes.",
+      "revId": "434a32ac479d290c489ca52bc41824ab444477e7",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f1d122f9_26c1fe19",
+        "filename": "start_akraino_portal.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 45
+      },
+      "writtenOn": "2018-08-03T14:42:04Z",
+      "side": 1,
+      "message": "URL contains \u0026, so this needs to be enclosed in double quotes.",
+      "revId": "434a32ac479d290c489ca52bc41824ab444477e7",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "75f57e62_cf160fea",
+        "filename": "start_akraino_portal.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 45
+      },
+      "writtenOn": "2018-08-03T14:42:04Z",
+      "side": 1,
+      "message": "URL contains \u0026, so this needs to be enclosed in double quotes.",
+      "revId": "434a32ac479d290c489ca52bc41824ab444477e7",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "118b353a_670963af",
+        "filename": "start_akraino_portal.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 45
+      },
+      "writtenOn": "2018-08-03T14:42:04Z",
+      "side": 1,
+      "message": "URL contains \u0026, so this needs to be enclosed in double quotes.",
+      "revId": "434a32ac479d290c489ca52bc41824ab444477e7",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "33f4c6be_c6f049f6",
+        "filename": "start_akraino_portal.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 45
+      },
+      "writtenOn": "2018-08-03T14:42:04Z",
+      "side": 1,
+      "message": "URL contains \u0026, so this needs to be enclosed in double quotes.",
+      "revId": "434a32ac479d290c489ca52bc41824ab444477e7",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cff52425_1fa6e064",
+        "filename": "start_akraino_portal.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 45
+      },
+      "writtenOn": "2018-08-03T14:42:04Z",
+      "side": 1,
+      "message": "URL contains \u0026, so this needs to be enclosed in double quotes.",
+      "revId": "434a32ac479d290c489ca52bc41824ab444477e7",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": false
+    }
+  ]
+}
