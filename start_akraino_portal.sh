@@ -78,7 +78,7 @@ docker exec postgres /bin/bash -c "psql -h localhost -p 5432 -U postgres -f /akr
 # Workflow
 docker run \
 	--detach \
-	--publish 8073:8080 \
+	--publish 8073:8015 \
 	--network=bridge \
 	--name akraino-workflow \
 	$WF_IMAGE
@@ -90,8 +90,14 @@ docker run \
 	--network=bridge \
         --volume /opt/tomcat/logs:/usr/local/tomcat/logs \
         --volume /opt/aec_poc/aic-clcp-manifests/site/site80:/usr/local/site80 \
+        --volume /opt/akraino/server-build:/opt/akraino/server-build \
 	--name akraino-portal \
 	$PT_IMAGE
+
+IP=$(ip route get 8.8.8.8 | grep -o "src .*$" | cut -f 2 -d ' ')
+sleep 15
+docker exec  akraino-portal /bin/sh -c "sed -i 's/localhost/$IP/g' /usr/local/tomcat/webapps/AECPortalMgmt/App.Config.js"
+docker exec  akraino-portal /bin/sh -c "sed -i 's/localhost/$IP/g' /usr/local/tomcat/webapps/AECPortalMgmt/WEB-INF/classes/app.properties"
 
 TEMPEST_HOME="/opt/akraino/tempest"
 YAML_BUILDS_HOME="/opt/akraino/yaml_builds"
