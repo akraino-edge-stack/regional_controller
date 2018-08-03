@@ -113,6 +113,7 @@ docker run \
         --volume /opt/tomcat/logs:/usr/local/tomcat/logs \
         --volume /opt/aec_poc/aic-clcp-manifests/site/site80:/usr/local/site80 \
         --volume /opt/akraino/server-build:/opt/akraino/server-build \
+        --volume /opt/akraino/onap:/opt/akraino/onap \
         --name akraino-portal \
         $PT_IMAGE
 
@@ -123,7 +124,11 @@ docker exec akraino-portal /bin/bash -c "sed -i -e \"s|[^':]*:8080|$IP:8080|g\" 
 docker exec akraino-portal /bin/bash -c "sed -i -e \"s|[^':]*:8073|$IP:8073|g\" /usr/local/tomcat/webapps/AECPortalMgmt/App.Config.js"
 docker exec akraino-portal /bin/bash -c "sed -i -e \"s|://[^:]*:|://$IP:|g\" /usr/local/tomcat/webapps/AECPortalMgmt/WEB-INF/classes/app.properties"
 
+docker stop akraino-portal &> /dev/null
+docker start akraino-portal &> /dev/null
+
 echo "Final portal configuration"
+sleep 10
 docker exec akraino-portal /bin/bash -c "cat /usr/local/tomcat/webapps/AECPortalMgmt/App.Config.js"
 docker exec akraino-portal /bin/bash -c "cat /usr/local/tomcat/webapps/AECPortalMgmt/WEB-INF/classes/app.properties"
 
