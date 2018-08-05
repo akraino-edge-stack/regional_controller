@@ -100,6 +100,7 @@ docker run \
         --publish 8073:8015 \
         --network=bridge \
         --name akraino-workflow \
+        --volume /var/camunda/log:/var/log \
         $WF_IMAGE
 
 # Portal
