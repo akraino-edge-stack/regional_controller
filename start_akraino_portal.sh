@@ -138,32 +138,32 @@ docker ps | grep akraino
 echo "Setting up tempest content/repositories"
 rm -rf $TEMPEST_HOME
 mkdir -p $TEMPEST_HOME
-wget -q "$TEMPEST_URL" -O - | tar -xz -C $TEMPEST_HOME
+wget -q "$TEMPEST_URL" -O - | tar -xoz -C $TEMPEST_HOME
 
 echo "Setting up yaml builds content/repositories"
 rm -rf $YAML_BUILDS_HOME
 mkdir -p $YAML_BUILDS_HOME
-wget -q "$YAML_BUILDS_URL" -O - | tar -xz -C $YAML_BUILDS_HOME
+wget -q "$YAML_BUILDS_URL" -O - | tar -xoz -C $YAML_BUILDS_HOME
 
 echo "Setting up ONAP content/repositories"
 rm -rf $ONAP_HOME
 mkdir -p $ONAP_HOME
-wget -q "$ONAP_URL" -O - | tar -xz -C $ONAP_HOME
+wget -q "$ONAP_URL" -O - | tar -xoz -C $ONAP_HOME
 
 echo "Setting up sample vnf content/repositories"
 rm -rf $SAMPLE_VNF_HOME
 mkdir -p $SAMPLE_VNF_HOME
-wget -q "$SAMPLE_VNF_URL" -O - | tar -xz -C $SAMPLE_VNF_HOME
+wget -q "$SAMPLE_VNF_URL" -O - | tar -xoz -C $SAMPLE_VNF_HOME
 
 echo "Setting up airshipinabottle content/repositories"
 rm -rf $AIRSHIPINABOTTLE_HOME
 mkdir -p $AIRSHIPINABOTTLE_HOME
-wget -q "$AIRSHIPINABOTTLE_URL" -O - | tar -xz -C $AIRSHIPINABOTTLE_HOME
+wget -q "$AIRSHIPINABOTTLE_URL" -O - | tar -xoz -C $AIRSHIPINABOTTLE_HOME
 
 echo "Setting up sample vnf content/repositories"
 rm -rf $REDFISH_HOME
 mkdir -p $REDFISH_HOME
-wget -q "$REDFISH_URL" -O - | tar -xz -C $REDFISH_HOME
+wget -q "$REDFISH_URL" -O - | tar -xoz -C $REDFISH_HOME
 
 echo "SUCCESS:  Portal install completed"
 
