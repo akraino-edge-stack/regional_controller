@@ -146,7 +146,7 @@ mkdir -p $YAML_BUILDS_HOME
 wget -q "$YAML_BUILDS_URL" -O - | tar -xoz -C $YAML_BUILDS_HOME
 
 echo "Setting up ONAP content/repositories"
-rm -rf $ONAP_HOME
+#rm -rf $ONAP_HOME - DO NOT REMOVE DIRECTORY - BREAKS PORTAL CONTAINER MOUNT
 mkdir -p $ONAP_HOME
 wget -q "$ONAP_URL" -O - | tar -xoz -C $ONAP_HOME
 
