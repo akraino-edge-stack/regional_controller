@@ -1,5 +1,37 @@
-export TARGET_SERVER_IP=
-export DB_SCHEMA_VERSION=1.0.0-SNAPSHOT
-export CAMUNDA_WORKFLOW_VERSION=0.0.1-SNAPSHOT
-export PORTAL_VERSION=0.0.1-SNAPSHOT
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#        https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# start_akraino_portal.sh - start the Akraino portal on the regional controller
+#
+
+TARGET_SERVER_IP=
+
+DATABASE_VERSION=1.0.0-SNAPSHOT
+WORKFLOW_VERSION=0.0.1-SNAPSHOT
+PORTAL_VERSION=0.0.1-SNAPSHOT
+
+# REMOVE THE LINES BELOW TO USE THE LATEST BUILD OF ARTIFACTS AND CONTAINERS
+
+DB_IMAGE="nexus3.akraino.org:10003/akraino_schema_db@sha256:54d08029b4fd8ceea87d90833e34a739c6209d02b99bec0d8934f9435ba845df"
+WF_IMAGE="nexus3.akraino.org:10003/akraino-camunda-workflow-engine@sha256:7d2582f9dcdc0c433258c3c12040fcd9ec8d3f7ab06ec2e22e6987e0bf0d0ebb"
+PT_IMAGE="nexus3.akraino.org:10003/akraino-portal@sha256:59e6d9037f468e1ac530c5f0f6119f17a8efe44bd17314c6a49ef76dcd28cffe"
+LD_IMAGE="openmicroscopy/apacheds"
+
+PORTAL_URL="https://nexus.akraino.org/service/local/repositories/snapshots/content/org/akraino/portal_user_interface/0.0.1-SNAPSHOT/portal_user_interface-0.0.1-20180805.184505-1.war"
+TEMPEST_URL="https://nexus.akraino.org/service/local/repositories/snapshots/content/org/akraino/test_automation/test_automation/1.0.0-SNAPSHOT/test_automation-1.0.0-20180805.103553-4.tgz"
+YAML_BUILDS_URL="https://nexus.akraino.org/service/local/repositories/snapshots/content/org/akraino/yaml_builds/yaml_builds/1.0.0-SNAPSHOT/yaml_builds-1.0.0-20180805.032150-3.tgz"
+ONAP_URL="https://nexus.akraino.org/service/local/repositories/snapshots/content/org/akraino/addon-onap/onap-amsterdam-regional-controller-master/1.0.0-SNAPSHOT/onap-amsterdam-regional-controller-master-1.0.0-20180807.175802-16.tgz"
+SAMPLE_VNF_URL="https://nexus.akraino.org/service/local/repositories/snapshots/content/org/akraino/sample_vnf/sample_vnf/1.0.0-SNAPSHOT/sample_vnf-1.0.0-20180805.133150-4.tgz"
+AIRSHIPINABOTTLE_URL="https://nexus.akraino.org/service/local/repositories/snapshots/content/org/akraino/airshipinabottle_deploy/airshipinabottle_deploy/1.0.0-SNAPSHOT/airshipinabottle_deploy-1.0.0-20180806.161608-6.tgz"
+REDFISH_URL="https://nexus.akraino.org/service/local/repositories/snapshots/content/org/akraino/redfish/redfish/1.0.0-SNAPSHOT/redfish-1.0.0-20180805.222845-10.tgz"
 

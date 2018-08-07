@@ -1,13 +1,13 @@
 #!/bin/bash
-# 
+#
 # Copyright (c) 2018 AT&T Intellectual Property. All rights reserved.
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #        https://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,23 +17,27 @@
 # start_akraino_portal.sh - start the Akraino portal on the regional controller
 #
 
-DB_VERSION=${1:-"1.0.0-SNAPSHOT"}
-WF_VERSION=${2:-"0.0.1-SNAPSHOT"}
-PT_VERSION=${3:-"0.0.1-SNAPSHOT"}
+BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+echo "Loading values from $BASEDIR/akrainorc"
+source $BASEDIR/akrainorc
 
-DB_IMAGE="nexus3.akraino.org:10003/akraino_schema_db:$DB_VERSION"
-WF_IMAGE="nexus3.akraino.org:10003/akraino-camunda-workflow-engine:$WF_VERSION"
-PT_IMAGE="nexus3.akraino.org:10003/akraino-portal:$PT_VERSION"
-LD_IMAGE="openmicroscopy/apacheds"
+DATABASE_VERSION=${DATABASE_VERSION:-"1.0.0-SNAPSHOT"}
+WORKFLOW_VERSION=${WORKFLOW_VERSION:-"0.0.1-SNAPSHOT"}
+PORTAL_VERSION=${PORTAL_VERSION:-"0.0.1-SNAPSHOT"}
 
-NEXUS_URL="https://nexus.akraino.org"
-PORTAL_URL="$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino&a=portal_user_interface&v=$PT_VERSION&e=war"
-TEMPEST_URL="$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.test_automation&a=test_automation&v=1.0.0-SNAPSHOT&e=tgz"
-YAML_BUILDS_URL="$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.yaml_builds&a=yaml_builds&v=1.0.0-SNAPSHOT&e=tgz"
-ONAP_URL="$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.addon-onap&a=onap-amsterdam-regional-controller-master&v=1.0.0-SNAPSHOT&e=tgz"
-SAMPLE_VNF_URL="$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.sample_vnf&a=sample_vnf&v=1.0.0-SNAPSHOT&e=tgz"
-AIRSHIPINABOTTLE_URL="$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.airshipinabottle_deploy&a=airshipinabottle_deploy&v=1.0.0-SNAPSHOT&e=tgz"
-REDFISH_URL="$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.redfish&a=redfish&v=1.0.0-SNAPSHOT&e=tgz"
+DB_IMAGE=${DB_IMAGE:-"nexus3.akraino.org:10003/akraino_schema_db:$DATABASE_VERSION"}
+WF_IMAGE=${WF_IMAGE:-"nexus3.akraino.org:10003/akraino-camunda-workflow-engine:$WORKFLOW_VERSION"}
+PT_IMAGE=${PT_IMAGE:-"nexus3.akraino.org:10003/akraino-portal:$PORTAL_VERSION"}
+LD_IMAGE=${LD_IMAGE:-"openmicroscopy/apacheds"}
+
+NEXUS_URL=${NEXUS_URL:-"https://nexus.akraino.org"}
+PORTAL_URL=${PORTAL_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino&a=portal_user_interface&v=$PORTAL_VERSION&e=war"}
+TEMPEST_URL=${TEMPEST_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.test_automation&a=test_automation&v=1.0.0-SNAPSHOT&e=tgz"}
+YAML_BUILDS_URL=${YAML_BUILDS_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.yaml_builds&a=yaml_builds&v=1.0.0-SNAPSHOT&e=tgz"}
+ONAP_URL=${ONAP_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.addon-onap&a=onap-amsterdam-regional-controller-master&v=1.0.0-SNAPSHOT&e=tgz"}
+SAMPLE_VNF_URL=${SAMPLE_VNF_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.sample_vnf&a=sample_vnf&v=1.0.0-SNAPSHOT&e=tgz"}
+AIRSHIPINABOTTLE_URL=${AIRSHIPINABOTTLE_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.airshipinabottle_deploy&a=airshipinabottle_deploy&v=1.0.0-SNAPSHOT&e=tgz"}
+REDFISH_URL=${REDFISH_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.redfish&a=redfish&v=1.0.0-SNAPSHOT&e=tgz"}
 
 LDAP_FILE_HOME="/opt/akraino/ldap"
 TEMPEST_HOME="/opt/akraino/tempest"
@@ -42,6 +46,23 @@ ONAP_HOME="/opt/akraino/onap"
 SAMPLE_VNF_HOME="/opt/akraino/sample_vnf"
 AIRSHIPINABOTTLE_HOME="/opt/akraino/airshipinabottle_deploy"
 REDFISH_HOME="/opt/akraino/redfish"
+
+echo "Installing regional controller software using the following artifact references:"
+echo ""
+echo "DB_IMAGE=$DB_IMAGE"
+echo "WF_IMAGE=$WF_IMAGE"
+echo "PT_IMAGE=$PT_IMAGE"
+echo "LD_IMAGE=$LD_IMAGE"
+echo ""
+echo "NEXUS_URL=$NEXUS_URL"
+echo "PORTAL_URL=$PORTAL_URL"
+echo "TEMPEST_URL=$TEMPEST_URL"
+echo "YAML_BUILDS_URL=$YAML_BUILDS_URL"
+echo "ONAP_URL=$ONAP_URL"
+echo "SAMPLE_VNF_URL=$SAMPLE_VNF_URL"
+echo "AIRSHIPINABOTTLE_URL=$AIRSHIPINABOTTLE_URL"
+echo "REDFISH_URL=$REDFISH_URL"
+echo ""
 
 # Find the primary ip address (the one used to access the default gateway)
 # This ip will be used for communication between the containers
@@ -69,6 +90,7 @@ rm -rf $LDAP_FILE_HOME
 mkdir -p $LDAP_FILE_HOME
 wget -q "$PORTAL_URL" -O /tmp/portal_user_interface.war
 unzip -oj /tmp/portal_user_interface.war WEB-INF/classes/*.ldif -d $LDAP_FILE_HOME
+rm -f /tmp/portal_user_interface.war
 
 docker stop akraino-ldap &> /dev/null
 docker rm akraino-ldap &> /dev/null
@@ -81,7 +103,7 @@ docker run \
         --env "APACHEDS_INSTANCE=akraino" \
         $LD_IMAGE
 
-# Initialize ldap 
+# Initialize ldap
 echo "Initialize ldap"
 sleep 15
 docker exec akraino-ldap /bin/bash -c "ldapadd -v -h $IP:10389 -c -x -D uid=admin,ou=system -w secret -f /bootstrap/conf/akrainousers.ldif"
