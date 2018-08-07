@@ -93,15 +93,6 @@ docker exec akraino-postgres /bin/bash -c "cp -rf /akraino-j2templates/* /var/li
 docker exec akraino-postgres /bin/bash -c "psql -h localhost -p 5432 -U postgres -f /akraino-db_0524.sql"
 
 # Workflow
-docker stop akraino-workflow &> /dev/null
-docker rm akraino-workflow &> /dev/null
-docker run \
-        --detach \
-        --publish 8073:8015 \
-        --network=bridge \
-        --name akraino-workflow \
-        --volume /var/camunda/log:/var/log \
-        $WF_IMAGE
 
 # Portal
 docker stop akraino-portal &> /dev/null
@@ -164,6 +155,19 @@ echo "Setting up sample vnf content/repositories"
 rm -rf $REDFISH_HOME
 mkdir -p $REDFISH_HOME
 wget -q "$REDFISH_URL" -O - | tar -xoz -C $REDFISH_HOME
+
+docker stop akraino-workflow &> /dev/null
+docker rm akraino-workflow &> /dev/null
+docker run \
+        --detach \
+        --publish 8073:8015 \
+        --network=bridge \
+        --name akraino-workflow \
+        --volume /var/camunda/log:/var/log \
+        --volume /opt/akraino:/opt/akraino \
+        $WF_IMAGE
+
+docker exec akraino-workflow /bin/bash -c "sed -i -e \"s|[^//:]*:8080|$IP:8080|g\"  /config/application.yaml"
 
 echo "SUCCESS:  Portal install completed"
 
