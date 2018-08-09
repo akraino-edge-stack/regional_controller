@@ -166,7 +166,7 @@ jar_name=$(docker exec akraino-workflow /bin/bash -c "ls -b camunda_workflow-*ja
 docker cp  akraino-workflow:/$jar_name $CAMUNDA_HOME/akraino-workflow.jar
 docker stop akraino-workflow &> /dev/null
 docker rm akraino-workflow &> /dev/null
-ln -sf $CAMUNDA_HOME/akraino-workflow.service /etc/systemd/system/akraino-workflow.service
+cp -f $CAMUNDA_HOME/akraino-workflow.service /etc/systemd/system/akraino-workflow.service
 systemctl daemon-reload
 systemctl enable akraino-workflow
 systemctl start akraino-workflow
