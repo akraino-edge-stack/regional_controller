@@ -148,6 +148,9 @@ docker exec akraino-portal /bin/bash -c "cat /usr/local/tomcat/webapps/AECPortal
 docker exec akraino-portal /bin/bash -c "cat /usr/local/tomcat/webapps/AECPortalMgmt/WEB-INF/classes/app.properties"
 
 # Workflow
+systemctl stop akraino-workflow &> /dev/null
+docker stop akraino-workflow &> /dev/null
+docker rm akraino-workflow &> /dev/null
 docker run \
         --detach \
         --network=bridge \
@@ -155,7 +158,8 @@ docker run \
         $WF_IMAGE
 
 docker exec akraino-workflow /bin/bash -c "sed -i -e \"s|[^//:]*:8080|$IP:8080|g\"  /config/application.yaml"
-CAMUNDA_HOME=/opt/akraino/region
+CAMUNDA_HOME=/opt/akraino/workflow
+mkdir -p $CAMUNDA_HOME
 sudo apt-get install -y python-software-properties debconf-utils
 sudo add-apt-repository -y ppa:webupd8team/java
 sudo apt-get update
@@ -166,10 +170,10 @@ jar_name=$(docker exec akraino-workflow /bin/bash -c "ls -b camunda_workflow-*ja
 docker cp  akraino-workflow:/$jar_name $CAMUNDA_HOME/akraino-workflow.jar
 docker stop akraino-workflow &> /dev/null
 docker rm akraino-workflow &> /dev/null
-cp -f $CAMUNDA_HOME/akraino-workflow.service /etc/systemd/system/akraino-workflow.service
+cp -f /opt/akraino/region/akraino-workflow.service /etc/systemd/system/
+cp -f /opt/akraino/region/akraino-workflow.sh $CAMUNDA_HOME
 systemctl daemon-reload
 systemctl enable akraino-workflow
-systemctl stop akraino-workflow
 systemctl start akraino-workflow
 systemctl is-active --quiet akraino-workflow && echo "akraino-workflow service started!"
 sleep 5

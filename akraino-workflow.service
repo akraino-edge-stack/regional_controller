@@ -3,8 +3,8 @@ Description=Akraino Workflow Engine
 
 [Service]
 User=root
-WorkingDirectory=/opt/akraino/region
-ExecStart=/opt/akraino/region/akraino-workflow.sh
+WorkingDirectory=/opt/akraino/workflow
+ExecStart=/opt/akraino/workflow/akraino-workflow.sh
 
 SuccessExitStatus=143
 TimeoutStopSec=10
