@@ -46,7 +46,6 @@ ONAP_HOME="/opt/akraino/onap"
 SAMPLE_VNF_HOME="/opt/akraino/sample_vnf"
 AIRSHIPINABOTTLE_HOME="/opt/akraino/airshipinabottle_deploy"
 REDFISH_HOME="/opt/akraino/redfish"
-CAMUNDA_HOME="/opt/akraino/camunda"
 
 echo "Installing regional controller software using the following artifact references:"
 echo ""
@@ -156,20 +155,23 @@ docker run \
         $WF_IMAGE
 
 docker exec akraino-workflow /bin/bash -c "sed -i -e \"s|[^//:]*:8080|$IP:8080|g\"  /config/application.yaml"
-CAMUNDA_HOME=/opt/akraino/camunda
-rm -rf $CAMUNDA_HOME
-mkdir -p $CAMUNDA_HOME
+CAMUNDA_HOME=/opt/akraino/region
 sudo apt-get install -y python-software-properties debconf-utils
 sudo add-apt-repository -y ppa:webupd8team/java
 sudo apt-get update
 echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | sudo debconf-set-selections
 sudo apt-get install -y oracle-java8-installer
 docker cp  akraino-workflow:/config $CAMUNDA_HOME
-jar_name=$(docker exec akraino-workflow /bin/bash -c "ls -la camunda_workflow-*jar" | awk '{ print $NF }')
-docker cp  akraino-workflow:/$jar_name $CAMUNDA_HOME
-(cd $CAMUNDA_HOME && nohup java -jar $jar_name --server.port=8073 &)
+jar_name=$(docker exec akraino-workflow /bin/bash -c "ls -b camunda_workflow-*jar")
+docker cp  akraino-workflow:/$jar_name $CAMUNDA_HOME/akraino-workflow.jar
 docker stop akraino-workflow &> /dev/null
 docker rm akraino-workflow &> /dev/null
+ln -sf $CAMUNDA_HOME/akraino-workflow.service /etc/systemd/system/akraino-workflow.service
+systemctl daemon-reload
+systemctl enable akraino-workflow
+systemctl start akraino-workflow
+systemctl status akraino-workflow
+journalctl --unit=akraino-workflow
 
 echo "Setting up tempest content/repositories"
 rm -rf $TEMPEST_HOME

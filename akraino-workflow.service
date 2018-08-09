@@ -1,0 +1,16 @@
+[Unit]
+Description=Akraino Workflow Engine
+
+[Service]
+User=root
+WorkingDirectory=/opt/akraino/region
+fileExecStart=/opt/akraino/region/akraino-workflow.sh
+
+SuccessExitStatus=143
+TimeoutStopSec=10
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+
