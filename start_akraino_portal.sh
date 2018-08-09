@@ -77,7 +77,7 @@ docker stop akraino-postgres &> /dev/null
 docker rm akraino-postgres &> /dev/null
 docker run \
         --detach \
-        --restart=always \
+        --restart=unless-stopped \
         --publish 6432:5432 \
         --volume /var/lib/postgres:/var/lib/postgresql/data \
         --network=bridge \
@@ -98,7 +98,7 @@ docker stop akraino-ldap &> /dev/null
 docker rm akraino-ldap &> /dev/null
 docker run \
         --detach \
-        --restart=always \
+        --restart=unless-stopped \
         --publish 10389:10389 \
         --volume $LDAP_FILE_HOME/config.ldif:/bootstrap/conf/config.ldif:ro \
         --volume $LDAP_FILE_HOME/akrainousers.ldif:/bootstrap/conf/akrainousers.ldif:ro \
@@ -123,7 +123,7 @@ docker rm akraino-portal &> /dev/null
 mkdir -p /opt/akraino/server-build
 docker run \
         --detach \
-        --restart=always \
+        --restart=unless-stopped \
         --publish 8080:8080 \
         --network=bridge \
         --volume /opt/tomcat/logs:/usr/local/tomcat/logs \
@@ -159,11 +159,15 @@ docker exec akraino-workflow /bin/bash -c "sed -i -e \"s|[^//:]*:8080|$IP:8080|g
 CAMUNDA_HOME=/opt/akraino/camunda
 rm -rf $CAMUNDA_HOME
 mkdir -p $CAMUNDA_HOME
+sudo apt-get install -y python-software-properties debconf-utils
+sudo add-apt-repository -y ppa:webupd8team/java
+sudo apt-get update
+echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | sudo debconf-set-selections
+sudo apt-get install -y oracle-java8-installer
 docker cp  akraino-workflow:/config $CAMUNDA_HOME
-jar_ls="$(docker exec akraino-workflow /bin/bash -c  "ls -la camunda_workflow-*jar ")"
-jar_name=`echo $jar_ls | awk '{ print $NF }'`
+jar_name=$(docker exec akraino-workflow /bin/bash -c "ls -la camunda_workflow-*jar" | awk '{ print $NF }')
 docker cp  akraino-workflow:/$jar_name $CAMUNDA_HOME
-cd $CAMUNDA_HOME && nohup java -jar $jar_name --server.port=8073 &
+(cd $CAMUNDA_HOME && nohup java -jar $jar_name --server.port=8073 &)
 docker stop akraino-workflow &> /dev/null
 docker rm akraino-workflow &> /dev/null
 
