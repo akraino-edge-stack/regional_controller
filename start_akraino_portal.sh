@@ -159,6 +159,11 @@ docker exec akraino-workflow /bin/bash -c "sed -i -e \"s|[^//:]*:8080|$IP:8080|g
 CAMUNDA_HOME=/opt/akraino/camunda
 rm -rf $CAMUNDA_HOME
 mkdir -p $CAMUNDA_HOME
+sudo apt-get install -y python-software-properties debconf-utils
+sudo add-apt-repository -y ppa:webupd8team/java
+sudo apt-get update
+echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | sudo debconf-set-selections
+sudo apt-get install -y oracle-java8-installer
 docker cp  akraino-workflow:/config $CAMUNDA_HOME
 jar_ls="$(docker exec akraino-workflow /bin/bash -c  "ls -la camunda_workflow-*jar ")"
 jar_name=`echo $jar_ls | awk '{ print $NF }'`
