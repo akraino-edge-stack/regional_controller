@@ -169,9 +169,11 @@ docker rm akraino-workflow &> /dev/null
 cp -f $CAMUNDA_HOME/akraino-workflow.service /etc/systemd/system/akraino-workflow.service
 systemctl daemon-reload
 systemctl enable akraino-workflow
+systemctl stop akraino-workflow
 systemctl start akraino-workflow
-systemctl status akraino-workflow
-journalctl --unit=akraino-workflow
+systemctl is-active --quiet akraino-workflow && echo "akraino-workflow service started!"
+sleep 5
+journalctl -u akraino-workflow --since "1 min ago" --no-pager
 
 echo "Setting up tempest content/repositories"
 rm -rf $TEMPEST_HOME
