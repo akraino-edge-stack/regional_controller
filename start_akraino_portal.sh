@@ -46,6 +46,7 @@ ONAP_HOME="/opt/akraino/onap"
 SAMPLE_VNF_HOME="/opt/akraino/sample_vnf"
 AIRSHIPINABOTTLE_HOME="/opt/akraino/airshipinabottle_deploy"
 REDFISH_HOME="/opt/akraino/redfish"
+CAMUNDA_HOME="/opt/akraino/camunda"
 
 echo "Installing regional controller software using the following artifact references:"
 echo ""
@@ -76,6 +77,7 @@ docker stop akraino-postgres &> /dev/null
 docker rm akraino-postgres &> /dev/null
 docker run \
         --detach \
+        --restart=always \
         --publish 6432:5432 \
         --volume /var/lib/postgres:/var/lib/postgresql/data \
         --network=bridge \
@@ -96,6 +98,7 @@ docker stop akraino-ldap &> /dev/null
 docker rm akraino-ldap &> /dev/null
 docker run \
         --detach \
+        --restart=always \
         --publish 10389:10389 \
         --volume $LDAP_FILE_HOME/config.ldif:/bootstrap/conf/config.ldif:ro \
         --volume $LDAP_FILE_HOME/akrainousers.ldif:/bootstrap/conf/akrainousers.ldif:ro \
@@ -120,6 +123,7 @@ docker rm akraino-portal &> /dev/null
 mkdir -p /opt/akraino/server-build
 docker run \
         --detach \
+        --restart=always \
         --publish 8080:8080 \
         --network=bridge \
         --volume /opt/tomcat/logs:/usr/local/tomcat/logs \
@@ -145,20 +149,23 @@ docker exec akraino-portal /bin/bash -c "cat /usr/local/tomcat/webapps/AECPortal
 docker exec akraino-portal /bin/bash -c "cat /usr/local/tomcat/webapps/AECPortalMgmt/WEB-INF/classes/app.properties"
 
 # Workflow
-docker stop akraino-workflow &> /dev/null
-docker rm akraino-workflow &> /dev/null
 docker run \
         --detach \
-        --publish 8073:8015 \
         --network=bridge \
         --name akraino-workflow \
-        --volume /var/camunda/log:/var/log \
-        --volume /opt/akraino:/opt/akraino \
         $WF_IMAGE
 
 docker exec akraino-workflow /bin/bash -c "sed -i -e \"s|[^//:]*:8080|$IP:8080|g\"  /config/application.yaml"
-
-docker ps | grep akraino
+CAMUNDA_HOME=/opt/akraino/camunda
+rm -rf $CAMUNDA_HOME
+mkdir -p $CAMUNDA_HOME
+docker cp  akraino-workflow:/config $CAMUNDA_HOME
+jar_ls="$(docker exec akraino-workflow /bin/bash -c  "ls -la camunda_workflow-*jar ")"
+jar_name=`echo $jar_ls | awk '{ print $NF }'`
+docker cp  akraino-workflow:/$jar_name $CAMUNDA_HOME
+cd $CAMUNDA_HOME && nohup java -jar $jar_name --server.port=8073 &
+docker stop akraino-workflow &> /dev/null
+docker rm akraino-workflow &> /dev/null
 
 echo "Setting up tempest content/repositories"
 rm -rf $TEMPEST_HOME
