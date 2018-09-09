@@ -21,9 +21,9 @@ BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 echo "Loading values from $BASEDIR/akrainorc"
 source $BASEDIR/akrainorc
 
-DATABASE_VERSION=${DATABASE_VERSION:-"1.0.0-SNAPSHOT"}
-WORKFLOW_VERSION=${WORKFLOW_VERSION:-"0.0.1-SNAPSHOT"}
-PORTAL_VERSION=${PORTAL_VERSION:-"0.0.1-SNAPSHOT"}
+DATABASE_VERSION=${DATABASE_VERSION:-"1.0.0-SNAPSHOT-development"}
+WORKFLOW_VERSION=${WORKFLOW_VERSION:-"0.0.1-SNAPSHOT-development"}
+PORTAL_VERSION=${PORTAL_VERSION:-"0.0.1-SNAPSHOT-development"}
 
 DB_IMAGE=${DB_IMAGE:-"nexus3.akraino.org:10003/akraino_schema_db:$DATABASE_VERSION"}
 WF_IMAGE=${WF_IMAGE:-"nexus3.akraino.org:10003/akraino-camunda-workflow-engine:$WORKFLOW_VERSION"}
@@ -32,12 +32,12 @@ LD_IMAGE=${LD_IMAGE:-"openmicroscopy/apacheds"}
 
 NEXUS_URL=${NEXUS_URL:-"https://nexus.akraino.org"}
 PORTAL_URL=${PORTAL_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino&a=portal_user_interface&v=$PORTAL_VERSION&e=war"}
-TEMPEST_URL=${TEMPEST_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.test_automation&a=test_automation&v=1.0.0-SNAPSHOT&e=tgz"}
-YAML_BUILDS_URL=${YAML_BUILDS_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.yaml_builds&a=yaml_builds&v=1.0.0-SNAPSHOT&e=tgz"}
-ONAP_URL=${ONAP_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.addon-onap&a=onap-amsterdam-regional-controller-master&v=1.0.0-SNAPSHOT&e=tgz"}
-SAMPLE_VNF_URL=${SAMPLE_VNF_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.sample_vnf&a=sample_vnf&v=1.0.0-SNAPSHOT&e=tgz"}
-AIRSHIPINABOTTLE_URL=${AIRSHIPINABOTTLE_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.airshipinabottle_deploy&a=airshipinabottle_deploy&v=1.0.0-SNAPSHOT&e=tgz"}
-REDFISH_URL=${REDFISH_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.redfish&a=redfish&v=1.0.0-SNAPSHOT&e=tgz"}
+TEMPEST_URL=${TEMPEST_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.test_automation&a=test_automation-1.0.0-development-SNAPSHOT&v=test_automation-1.0.0-development-SNAPSHOT&e=tgz"}
+YAML_BUILDS_URL=${YAML_BUILDS_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.yaml_builds&a=yaml_builds-1.0.0-development-SNAPSHOT&v=yaml_builds-1.0.0-development-SNAPSHOT&e=tgz"}
+ONAP_URL=${ONAP_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.addon-onap&a=onap-amsterdam-regional-controller-development&v=1.0.0-SNAPSHOT&e=tgz"}
+SAMPLE_VNF_URL=${SAMPLE_VNF_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.sample_vnf&a=sample_vnf-1.0.0-development-SNAPSHOT&v=sample_vnf-1.0.0-development-SNAPSHOT&e=tgz"}
+AIRSHIPINABOTTLE_URL=${AIRSHIPINABOTTLE_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.airshipinabottle_deploy&a=airshipinabottle_deploy-1.0.0-development-SNAPSHOT&v=airshipinabottle_deploy-1.0.0-development-SNAPSHOT&e=tgz"}
+REDFISH_URL=${REDFISH_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.redfish&a=redfish-1.0.0-development-SNAPSHOT&v=redfish-1.0.0-development-SNAPSHOT&e=tgz"}
 
 LDAP_FILE_HOME="/opt/akraino/ldap"
 TEMPEST_HOME="/opt/akraino/tempest"
