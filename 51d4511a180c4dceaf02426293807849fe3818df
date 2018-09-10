@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "54e140ac_4604baf0",
+        "filename": "start_akraino_portal.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 45
+      },
+      "writtenOn": "2018-09-10T14:50:16Z",
+      "side": 1,
+      "message": "not needed - the value is set in akrainorc; this just sets a value of akrainorc is not set",
+      "revId": "51d4511a180c4dceaf02426293807849fe3818df",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a608b194_8d9093af",
+        "filename": "start_akraino_portal.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 45
+      },
+      "writtenOn": "2018-09-10T14:50:16Z",
+      "side": 1,
+      "message": "not needed - the value is set in akrainorc; this just sets a value of akrainorc is not set",
+      "revId": "51d4511a180c4dceaf02426293807849fe3818df",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da2f12a9_26a06643",
+        "filename": "start_akraino_portal.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 45
+      },
+      "writtenOn": "2018-09-10T14:50:16Z",
+      "side": 1,
+      "message": "not needed - the value is set in akrainorc; this just sets a value of akrainorc is not set",
+      "revId": "51d4511a180c4dceaf02426293807849fe3818df",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4217cdda_ce9ceb81",
+        "filename": "start_akraino_portal.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 45
+      },
+      "writtenOn": "2018-09-10T14:50:16Z",
+      "side": 1,
+      "message": "Lines 34 - 40 - again, these lines should NOT change; the values to use should be set in akrainorc",
+      "revId": "51d4511a180c4dceaf02426293807849fe3818df",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": false
+    }
+  ]
+}
