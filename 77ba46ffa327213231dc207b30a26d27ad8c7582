@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "47899e13_155a9b61",
+        "filename": "akrainorc",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 45
+      },
+      "writtenOn": "2018-09-17T15:35:00Z",
+      "side": 1,
+      "message": "This should use $DATABASE_VERSION",
+      "revId": "77ba46ffa327213231dc207b30a26d27ad8c7582",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "04da2fbf_187fdba2",
+        "filename": "akrainorc",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 45
+      },
+      "writtenOn": "2018-09-17T15:35:00Z",
+      "side": 1,
+      "message": "This should use $WORKFLOW_VERSION",
+      "revId": "77ba46ffa327213231dc207b30a26d27ad8c7582",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "69595c31_49f8c234",
+        "filename": "akrainorc",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 45
+      },
+      "writtenOn": "2018-09-17T15:35:00Z",
+      "side": 1,
+      "message": "This should use $PORTAL_VERSION",
+      "revId": "77ba46ffa327213231dc207b30a26d27ad8c7582",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": false
+    }
+  ]
+}
