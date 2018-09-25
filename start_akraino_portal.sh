@@ -64,6 +64,9 @@ echo "AIRSHIPINABOTTLE_URL=$AIRSHIPINABOTTLE_URL"
 echo "REDFISH_URL=$REDFISH_URL"
 echo ""
 
+#Added permission to yaml_builds
+chmod 750 /opt/akraino/yaml_builds
+
 # Find the primary ip address (the one used to access the default gateway)
 # This ip will be used for communication between the containers
 IP=$(ip route get 8.8.8.8 | grep -o "src .*$" | cut -f 2 -d ' ')
