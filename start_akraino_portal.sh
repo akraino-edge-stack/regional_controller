@@ -130,6 +130,7 @@ docker run \
         --network=bridge \
         --volume /opt/tomcat/logs:/usr/local/tomcat/logs \
         --volume /opt/aec_poc/aic-clcp-manifests/site/site80:/usr/local/site80 \
+        --volume /opt/akraino/yaml_builds:/opt/akraino/yaml_builds \
         --volume /opt/akraino/server-build:/opt/akraino/server-build \
         --volume /opt/akraino/onap:/opt/akraino/onap \
         --name akraino-portal \
