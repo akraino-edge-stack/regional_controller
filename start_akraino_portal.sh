@@ -42,6 +42,7 @@ REDFISH_URL=${REDFISH_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=s
 LDAP_FILE_HOME="/opt/akraino/ldap"
 TEMPEST_HOME="/opt/akraino/tempest"
 YAML_BUILDS_HOME="/opt/akraino/yaml_builds"
+chmod 700 /opt/akraino/yaml_builds
 ONAP_HOME="/opt/akraino/onap"
 SAMPLE_VNF_HOME="/opt/akraino/sample_vnf"
 AIRSHIPINABOTTLE_HOME="/opt/akraino/airshipinabottle_deploy"
@@ -79,6 +80,7 @@ docker run \
         --restart=unless-stopped \
         --publish 6432:5432 \
         --volume /var/lib/postgres:/var/lib/postgresql/data \
+        --volume /opt/akraino/akraino-j2templates:/opt/akraino/akraino-j2templates \
         --network=bridge \
         --name akraino-postgres \
         --env "POSTGRES_USER=admin" \
@@ -113,8 +115,17 @@ docker exec akraino-ldap /bin/bash -c "ldapadd -v -h $IP:10389 -c -x -D uid=admi
 # Intialize DB
 echo "Initialize DB"
 sleep 30
-docker exec akraino-postgres /bin/bash -c "cp -rf /akraino-j2templates/* /var/lib/postgresql/data/"
+docker exec akraino-postgres /bin/bash -c "cp -rf /akraino-j2templates/*  /opt/akraino/akraino-j2templates/"
 docker exec akraino-postgres /bin/bash -c "psql -h localhost -p 5432 -U postgres -f /akraino-db_0524.sql"
+
+
+#yaml builds
+
+echo "Setting up yaml builds content/repositories"
+rm -rf $YAML_BUILDS_HOME
+mkdir -p $YAML_BUILDS_HOME
+chmod 700 $YAML_BUILDS_HOME
+wget -q "$YAML_BUILDS_URL" -O - | tar -xoz -C $YAML_BUILDS_HOME
 
 # Portal
 docker stop akraino-portal &> /dev/null
@@ -125,12 +136,13 @@ docker run \
         --restart=unless-stopped \
         --publish 8080:8080 \
         --network=bridge \
-        --volume /opt/tomcat/logs:/usr/local/tomcat/logs \
-        --volume /opt/aec_poc/aic-clcp-manifests/site/site80:/usr/local/site80 \
+        --volume /opt/akraino/tomcat/logs:/usr/local/tomcat/logs \
+        --volume /opt/akraino/yaml_builds:/opt/akraino/yaml_builds \
         --volume /opt/akraino/server-build:/opt/akraino/server-build \
         --volume /opt/akraino/onap:/opt/akraino/onap \
         --name akraino-portal \
         $PT_IMAGE
+
 
 # Portal configuration
 echo "Updating portal configuration"
@@ -184,10 +196,11 @@ rm -rf $TEMPEST_HOME
 mkdir -p $TEMPEST_HOME
 wget -q "$TEMPEST_URL" -O - | tar -xoz -C $TEMPEST_HOME
 
-echo "Setting up yaml builds content/repositories"
-rm -rf $YAML_BUILDS_HOME
-mkdir -p $YAML_BUILDS_HOME
-wget -q "$YAML_BUILDS_URL" -O - | tar -xoz -C $YAML_BUILDS_HOME
+#echo "Setting up yaml builds content/repositories"
+#rm -rf $YAML_BUILDS_HOME
+#mkdir -p $YAML_BUILDS_HOME
+#chmod 744 $YAML_BUILDS_HOME
+#wget -q "$YAML_BUILDS_URL" -O - | tar -xoz -C $YAML_BUILDS_HOME
 
 echo "Setting up ONAP content/repositories"
 #rm -rf $ONAP_HOME - DO NOT REMOVE DIRECTORY - BREAKS PORTAL CONTAINER MOUNT

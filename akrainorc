@@ -16,22 +16,20 @@
 
 TARGET_SERVER_IP=
 
-DATABASE_VERSION=0.0.1
-WORKFLOW_VERSION=0.0.1
-PORTAL_VERSION=0.0.1
+DATABASE_VERSION=0.0.2-SNAPSHOT
+WORKFLOW_VERSION=0.0.2-SNAPSHOT
+PORTAL_VERSION=0.0.2-SNAPSHOT
 
-DB_IMAGE="nexus3.akraino.org:10004/akraino_schema_db:$DATABASE_VERSION"
-WF_IMAGE="nexus3.akraino.org:10004/akraino-camunda-workflow-engine:$WORKFLOW_VERSION"
-PT_IMAGE="nexus3.akraino.org:10004/akraino-portal:$PORTAL_VERSION"
+DB_IMAGE="nexus3.akraino.org:10003/akraino_schema_db:$DATABASE_VERSION"
+WF_IMAGE="nexus3.akraino.org:10003/akraino-camunda-workflow-engine:$WORKFLOW_VERSION"
+PT_IMAGE="nexus3.akraino.org:10003/akraino-portal:$PORTAL_VERSION"
 LD_IMAGE="openmicroscopy/apacheds"
 
 NEXUS_URL="https://nexus.akraino.org"
-
-AIRSHIPINABOTTLE_URL="$NEXUS_URL/content/repositories/autostaging-1126/airshipinabottle_deploy-0.0.1.tgz"
-ONAP_URL="$NEXUS_URL/content/repositories/autostaging-1131/onap-amsterdam-regional-controller-master-0.0.1.tgz"
-PORTAL_URL="$NEXUS_URL/content/repositories/autostaging-1147/org/akraino/portal_user_interface/0.0.1/portal_user_interface-0.0.1.war"
-REDFISH_URL="$NEXUS_URL/content/repositories/autostaging-1127/redfish-0.0.1.tgz"
-SAMPLE_VNF_URL="$NEXUS_URL/content/repositories/autostaging-1132/sample_vnf-0.0.1.tgz"
-TEMPEST_URL="$NEXUS_URL/content/repositories/autostaging-1122/test_automation-0.0.1.tgz"
-YAML_BUILDS_URL="$NEXUS_URL/content/repositories/autostaging-1145/yaml_builds-0.0.1.tgz"
-
+PORTAL_URL="$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino&a=portal_user_interface&v=0.0.2-SNAPSHOT&e=war"
+TEMPEST_URL="$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.test_automation&a=test_automation&v=1.0.0-SNAPSHOT&e=tgz"
+YAML_BUILDS_URL="$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.yaml_builds&a=yaml_builds&v=0.0.2-SNAPSHOT&e=tgz"
+ONAP_URL="$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.addon-onap&a=onap-amsterdam-regional-controller-master&v=1.0.0-SNAPSHOT&e=tgz"
+SAMPLE_VNF_URL="$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.sample_vnf&a=sample_vnf&v=1.0.0-SNAPSHOT&e=tgz"
+AIRSHIPINABOTTLE_URL="$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.airshipinabottle_deploy&a=airshipinabottle_deploy&v=1.0.0-SNAPSHOT&e=tgz"
+REDFISH_URL="$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.redfish&a=redfish&v=0.0.2-SNAPSHOT&e=tgz"
