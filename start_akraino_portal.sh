@@ -120,12 +120,15 @@ docker exec akraino-postgres /bin/bash -c "psql -h localhost -p 5432 -U postgres
 
 
 #yaml builds
-
 echo "Setting up yaml builds content/repositories"
 rm -rf $YAML_BUILDS_HOME
 mkdir -p $YAML_BUILDS_HOME
 chmod 700 $YAML_BUILDS_HOME
 wget -q "$YAML_BUILDS_URL" -O - | tar -xoz -C $YAML_BUILDS_HOME
+echo "Downloading airship treasuremap configuration files"
+(cd /root; git clone https://git.openstack.org/openstack/airship-treasuremap;)
+(cd /root/airship-treasuremap; git checkout 059857148ad142730b5a69374e44a988cac92378; git checkout -b stable)
+sed -i "s/ceph-common=10.2.10/ceph-common=10.2.11/" /root/airship-treasuremap/global/v4.0/software/config/versions.yaml
 
 # Portal
 docker stop akraino-portal &> /dev/null
@@ -217,7 +220,7 @@ rm -rf $AIRSHIPINABOTTLE_HOME
 mkdir -p $AIRSHIPINABOTTLE_HOME
 wget -q "$AIRSHIPINABOTTLE_URL" -O - | tar -xoz -C $AIRSHIPINABOTTLE_HOME
 
-echo "Setting up sample vnf content/repositories"
+echo "Setting up redfish tools content/repositories"
 rm -rf $REDFISH_HOME
 mkdir -p $REDFISH_HOME
 wget -q "$REDFISH_URL" -O - | tar -xoz -C $REDFISH_HOME
