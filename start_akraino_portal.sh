@@ -75,6 +75,7 @@ apt-get install unzip -y
 echo "Download DB files"
 docker stop akraino-postgres &> /dev/null
 docker rm akraino-postgres &> /dev/null
+docker image rm $DB_IMAGE &> /dev/null
 docker run \
         --detach \
         --restart=unless-stopped \
@@ -97,6 +98,7 @@ rm -f /tmp/portal_user_interface.war
 
 docker stop akraino-ldap &> /dev/null
 docker rm akraino-ldap &> /dev/null
+docker image rm $LD_IMAGE &> /dev/null
 docker run \
         --detach \
         --restart=unless-stopped \
@@ -133,6 +135,7 @@ sed -i "s/ceph-common=10.2.10/ceph-common=10.2.11/" /root/airship-treasuremap/gl
 # Portal
 docker stop akraino-portal &> /dev/null
 docker rm akraino-portal &> /dev/null
+docker image rm $PT_IMAGE &> /dev/null
 mkdir -p /opt/akraino/server-build
 docker run \
         --detach \
@@ -166,6 +169,7 @@ docker exec akraino-portal /bin/bash -c "cat /usr/local/tomcat/webapps/AECPortal
 systemctl stop akraino-workflow &> /dev/null
 docker stop akraino-workflow &> /dev/null
 docker rm akraino-workflow &> /dev/null
+docker image rm $WF_IMAGE &> /dev/null
 docker run \
         --detach \
         --network=bridge \
@@ -175,11 +179,14 @@ docker run \
 docker exec akraino-workflow /bin/bash -c "sed -i -e \"s|[^//:]*:8080|$IP:8080|g\"  /config/application.yaml"
 CAMUNDA_HOME=/opt/akraino/workflow
 mkdir -p $CAMUNDA_HOME
-sudo apt-get install -y python-software-properties debconf-utils
-sudo add-apt-repository -y ppa:webupd8team/java
-sudo apt-get update
-echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | sudo debconf-set-selections
-sudo apt-get install -y oracle-java8-installer
+if (! apt list oracle-java8-installer | grep "\[installed\]"); then
+    echo "Installing java8..."
+    sudo add-apt-repository -y ppa:webupd8team/java
+    sudo apt-get -qq update
+    sudo apt-get install -y python-software-properties debconf-utils
+    echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | sudo debconf-set-selections
+    sudo apt-get install -y oracle-java8-installer
+fi
 docker cp  akraino-workflow:/config $CAMUNDA_HOME
 jar_name=$(docker exec akraino-workflow /bin/bash -c "ls -b camunda_workflow-*jar")
 docker cp  akraino-workflow:/$jar_name $CAMUNDA_HOME/akraino-workflow.jar
