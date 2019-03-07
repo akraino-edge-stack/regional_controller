@@ -42,7 +42,6 @@ REDFISH_URL=${REDFISH_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=s
 LDAP_FILE_HOME="/opt/akraino/ldap"
 TEMPEST_HOME="/opt/akraino/tempest"
 YAML_BUILDS_HOME="/opt/akraino/yaml_builds"
-chmod 700 /opt/akraino/yaml_builds
 ONAP_HOME="/opt/akraino/onap"
 SAMPLE_VNF_HOME="/opt/akraino/sample_vnf"
 AIRSHIPINABOTTLE_HOME="/opt/akraino/airshipinabottle_deploy"
