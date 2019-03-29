@@ -46,6 +46,7 @@ ONAP_HOME="/opt/akraino/onap"
 SAMPLE_VNF_HOME="/opt/akraino/sample_vnf"
 AIRSHIPINABOTTLE_HOME="/opt/akraino/airshipinabottle_deploy"
 REDFISH_HOME="/opt/akraino/redfish"
+LOG_HOME="/var/log/akraino"
 
 echo "Installing regional controller software using the following artifact references:"
 echo ""
@@ -69,6 +70,9 @@ echo ""
 IP=$(ip route get 8.8.8.8 | grep -o "src .*$" | cut -f 2 -d ' ')
 
 apt-get install unzip -y
+
+# Create log directory
+mkdir -p $LOG_HOME
 
 # PostgreSQL
 echo "Download DB files"
@@ -204,12 +208,6 @@ echo "Setting up tempest content/repositories"
 rm -rf $TEMPEST_HOME
 mkdir -p $TEMPEST_HOME
 wget -q "$TEMPEST_URL" -O - | tar -xoz -C $TEMPEST_HOME
-
-#echo "Setting up yaml builds content/repositories"
-#rm -rf $YAML_BUILDS_HOME
-#mkdir -p $YAML_BUILDS_HOME
-#chmod 744 $YAML_BUILDS_HOME
-#wget -q "$YAML_BUILDS_URL" -O - | tar -xoz -C $YAML_BUILDS_HOME
 
 echo "Setting up ONAP content/repositories"
 #rm -rf $ONAP_HOME - DO NOT REMOVE DIRECTORY - BREAKS PORTAL CONTAINER MOUNT
