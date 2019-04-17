@@ -182,21 +182,24 @@ docker run \
 docker exec akraino-workflow /bin/bash -c "sed -i -e \"s|[^//:]*:8080|$IP:8080|g\"  /config/application.yaml"
 CAMUNDA_HOME=/opt/akraino/workflow
 mkdir -p $CAMUNDA_HOME
-if (! apt list oracle-java8-installer | grep "\[installed\]"); then
-    echo "Installing java8..."
-    sudo add-apt-repository -y ppa:webupd8team/java
+if (! apt list openjdk-11-jdk | grep "\[installed\]"); then
+    echo "Installing java 11..."
+    sudo add-apt-repository -y ppa:openjdk-r/ppa
     sudo apt-get -qq update
-    sudo apt-get install -y python-software-properties debconf-utils
-    echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | sudo debconf-set-selections
-    sudo apt-get install -y oracle-java8-installer
+    sudo apt-get install -y openjdk-11-jdk --no-install-recommends
+    java -version
 fi
 docker cp  akraino-workflow:/config $CAMUNDA_HOME
 jar_name=$(docker exec akraino-workflow /bin/bash -c "ls -b camunda_workflow-*jar")
-docker cp  akraino-workflow:/$jar_name $CAMUNDA_HOME/akraino-workflow.jar
+docker cp  akraino-workflow:/$jar_name $CAMUNDA_HOME/$jar_name
 docker stop akraino-workflow &> /dev/null
 docker rm akraino-workflow &> /dev/null
 cp -f /opt/akraino/region/akraino-workflow.service /etc/systemd/system/
-cp -f /opt/akraino/region/akraino-workflow.sh $CAMUNDA_HOME
+cat <<EOF > $CAMUNDA_HOME/akraino-workflow.sh
+#!/bin/sh
+/usr/bin/java -jar $CAMUNDA_HOME/$jar_name --server.port=8073
+EOF
+chmod +x $CAMUNDA_HOME/akraino-workflow.sh
 systemctl daemon-reload
 systemctl enable akraino-workflow
 systemctl start akraino-workflow
