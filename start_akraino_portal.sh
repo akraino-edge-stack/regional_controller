@@ -195,11 +195,7 @@ docker cp  akraino-workflow:/$jar_name $CAMUNDA_HOME/$jar_name
 docker stop akraino-workflow &> /dev/null
 docker rm akraino-workflow &> /dev/null
 cp -f /opt/akraino/region/akraino-workflow.service /etc/systemd/system/
-cat <<EOF > $CAMUNDA_HOME/akraino-workflow.sh
-#!/bin/sh
-/usr/bin/java -jar $CAMUNDA_HOME/$jar_name --server.port=8073
-EOF
-chmod +x $CAMUNDA_HOME/akraino-workflow.sh
+cp -f /opt/akraino/region/akraino-workflow.sh $CAMUNDA_HOME
 systemctl daemon-reload
 systemctl enable akraino-workflow
 systemctl start akraino-workflow
