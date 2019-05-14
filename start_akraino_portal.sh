@@ -68,6 +68,10 @@ echo ""
 # Find the primary ip address (the one used to access the default gateway)
 # This ip will be used for communication between the containers
 IP=$(ip route get 8.8.8.8 | grep -o "src .*$" | cut -f 2 -d ' ')
+HOSTNAME=$(hostname -s)
+if ! grep "$HOSTNAME" /etc/hosts; then
+    echo "$IP $HOSTNAME" >> /etc/hosts
+fi
 
 echo "Installing required software packages"
 apt-get -q update
