@@ -71,12 +71,15 @@ IP=$(ip route get 8.8.8.8 | grep -o "src .*$" | cut -f 2 -d ' ')
 
 echo "Installing required software packages"
 apt-get -q update
-apt-get install -y sshpass python python-pip python-requests python-yaml python-jinja2 xorriso unzip 2>&1
+apt-get install -y apt-transport-https sshpass python python-pip python-requests python-yaml python-jinja2 xorriso unzip 2>&1
 
 echo "Checking that docker is running"
 if ! docker ps; then
-    echo "Docker is not running.  Please install docker and try again."
-    exit 1
+    echo "Docker is not running.  Installing docker..."
+    curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+    echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" >/etc/apt/sources.list.d/kubernetes.list
+    apt-get update -q
+    apt-get install -y docker.io aufs-tools  2>&1
 fi
 
 # Create log directory
@@ -144,7 +147,7 @@ echo "Downloading airship treasuremap configuration files"
 (cd /root/airship-treasuremap; git checkout 059857148ad142730b5a69374e44a988cac92378; git checkout -b stable)
 sed -i "s/ceph-common=10.2.10/ceph-common=10.2.11/" /root/airship-treasuremap/global/v4.0/software/config/versions.yaml
 # SR-IOV UPDATES
-sed -i -e 's|docker.io/openstackhelm/neutron:ocata|docker.io/openstackhelm/neutron:ocata\n      neutron_sriov_agent: &neutron_sriov docker.io/openstackhelm/neutron:ocata-sriov-1804\n      neutron_sriov_agent_init: &neutron_sriov_init docker.io/openstackhelm/neutron:ocata-sriov-1804|g' /root/airship-treasuremap/global/v4.0/software/config/versions.yaml
+sed -i -e 's|docker.io/openstackhelm/neutron:ocata|docker.io/openstackhelm/neutron:ocata\n      neutron_sriov_agent: \&neutron_sriov docker.io/openstackhelm/neutron:ocata-sriov-1804\n      neutron_sriov_agent_init: \&neutron_sriov_init docker.io/openstackhelm/neutron:ocata-sriov-1804|g' /root/airship-treasuremap/global/v4.0/software/config/versions.yaml
 sed -i -e 's|neutron_linuxbridge_agent|neutron_linuxbridge_agent: *neutron\n        neutron_sriov_agent: *neutron_sriov\n        neutron_sriov_agent_init: *neutron_sriov_init|g' /root/airship-treasuremap/global/v4.0/software/config/versions.yaml
 
 # Portal
@@ -198,7 +201,7 @@ if (! apt list openjdk-11-jdk | grep "\[installed\]"); then
     echo "Installing java 11..."
     sudo add-apt-repository -y ppa:openjdk-r/ppa
     sudo apt-get -qq update
-    sudo apt-get install -y openjdk-11-jdk --no-install-recommends
+    sudo apt-get install -y openjdk-11-jre --no-install-recommends
     java -version
 fi
 docker cp  akraino-workflow:/config $CAMUNDA_HOME
@@ -240,6 +243,6 @@ rm -rf $REDFISH_HOME
 mkdir -p $REDFISH_HOME
 wget -q "$REDFISH_URL" -O - | tar -xoz -C $REDFISH_HOME
 
-echo "SUCCESS:  Portal can be accessed at http://$TARGET_SERVER_IP:8080/AECPortalMgmt/"
+echo "SUCCESS:  Portal can be accessed at http://$IP:8080/AECPortalMgmt/"
 echo "SUCCESS:  Portal install completed"
 
