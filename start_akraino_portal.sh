@@ -153,6 +153,8 @@ sed -i "s/ceph-common=10.2.10/ceph-common=10.2.11/" /root/airship-treasuremap/gl
 # SR-IOV UPDATES
 sed -i -e 's|docker.io/openstackhelm/neutron:ocata|docker.io/openstackhelm/neutron:ocata\n      neutron_sriov_agent: \&neutron_sriov docker.io/openstackhelm/neutron:ocata-sriov-1804\n      neutron_sriov_agent_init: \&neutron_sriov_init docker.io/openstackhelm/neutron:ocata-sriov-1804|g' /root/airship-treasuremap/global/v4.0/software/config/versions.yaml
 sed -i -e 's|neutron_linuxbridge_agent.*|neutron_linuxbridge_agent: *neutron\n        neutron_sriov_agent: *neutron_sriov\n        neutron_sriov_agent_init: *neutron_sriov_init|g' /root/airship-treasuremap/global/v4.0/software/config/versions.yaml
+# Copy OVS-DPDK specific versions.yaml
+cp $BASEDIR/versions.yaml /root/airship-treasuremap/global/v4.0/software/config/
 
 # Portal
 docker stop akraino-portal &> /dev/null
