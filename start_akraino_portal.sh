@@ -33,11 +33,11 @@ LD_IMAGE=${LD_IMAGE:-"openmicroscopy/apacheds"}
 NEXUS_URL=${NEXUS_URL:-"https://nexus.akraino.org"}
 PORTAL_URL=${PORTAL_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino&a=portal_user_interface&v=$PORTAL_VERSION&e=war"}
 TEMPEST_URL=${TEMPEST_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.test_automation&a=test_automation&v=0.0.2-SNAPSHOT&e=tgz"}
-YAML_BUILDS_URL=${YAML_BUILDS_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.yaml_builds&a=yaml_builds&v=0.0.2-SNAPSHOT&e=tgz"}
+YAML_BUILDS_URL=${YAML_BUILDS_URL:-"https://gerrit.akraino.org/r/changes/yaml_builds~746/revisions/2/archive?format=tgz"}
 ONAP_URL=${ONAP_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.addon-onap&a=onap-amsterdam-regional-controller-master&v=0.0.2-SNAPSHOT&e=tgz"}
 SAMPLE_VNF_URL=${SAMPLE_VNF_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.sample_vnf&a=sample_vnf&v=0.0.2-SNAPSHOT&e=tgz"}
 AIRSHIPINABOTTLE_URL=${AIRSHIPINABOTTLE_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.airshipinabottle_deploy&a=airshipinabottle_deploy&v=0.0.2-SNAPSHOT&e=tgz"}
-REDFISH_URL=${REDFISH_URL:-"$NEXUS_URL/service/local/artifact/maven/redirect?r=snapshots&g=org.akraino.redfish&a=redfish&v=0.0.2-SNAPSHOT&e=tgz"}
+REDFISH_URL=${REDFISH_URL:-"https://gerrit.akraino.org/r/changes/redfish~724/revisions/2/archive?format=tgz"}
 
 LDAP_FILE_HOME="/opt/akraino/ldap"
 TEMPEST_HOME="/opt/akraino/tempest"
@@ -153,6 +153,8 @@ sed -i "s/ceph-common=10.2.10/ceph-common=10.2.11/" /root/airship-treasuremap/gl
 # SR-IOV UPDATES
 sed -i -e 's|docker.io/openstackhelm/neutron:ocata|docker.io/openstackhelm/neutron:ocata\n      neutron_sriov_agent: \&neutron_sriov docker.io/openstackhelm/neutron:ocata-sriov-1804\n      neutron_sriov_agent_init: \&neutron_sriov_init docker.io/openstackhelm/neutron:ocata-sriov-1804|g' /root/airship-treasuremap/global/v4.0/software/config/versions.yaml
 sed -i -e 's|neutron_linuxbridge_agent.*|neutron_linuxbridge_agent: *neutron\n        neutron_sriov_agent: *neutron_sriov\n        neutron_sriov_agent_init: *neutron_sriov_init|g' /root/airship-treasuremap/global/v4.0/software/config/versions.yaml
+# Copy OVS-DPDK specific versions.yaml
+cp $BASEDIR/versions.yaml /root/airship-treasuremap/global/v4.0/software/config/
 
 # Portal
 docker stop akraino-portal &> /dev/null
