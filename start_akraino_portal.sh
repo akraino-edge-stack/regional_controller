@@ -75,7 +75,7 @@ fi
 
 echo "Installing required software packages"
 apt-get -q update
-apt-get install -y apt-transport-https sshpass python python-pip python-requests python-yaml python-jinja2 xorriso unzip 2>&1
+apt-get install -y apt-transport-https sshpass python python-pip python-requests python-yaml python-jinja2 python-netaddr xorriso unzip 2>&1
 
 echo "Checking that docker is running"
 if ! docker ps; then
