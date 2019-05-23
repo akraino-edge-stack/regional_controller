@@ -146,14 +146,6 @@ mkdir -p $YAML_BUILDS_HOME
 chmod 700 $YAML_BUILDS_HOME
 wget -q "$YAML_BUILDS_URL" -O - | tar -xoz -C $YAML_BUILDS_HOME
 
-echo "Downloading airship treasuremap configuration files"
-(cd /root; rm -rf /root/airship-treasuremap; git clone https://git.openstack.org/openstack/airship-treasuremap;)
-(cd /root/airship-treasuremap; git checkout 059857148ad142730b5a69374e44a988cac92378; git checkout -b stable)
-sed -i "s/ceph-common=10.2.10/ceph-common=10.2.11/" /root/airship-treasuremap/global/v4.0/software/config/versions.yaml
-# SR-IOV UPDATES
-sed -i -e 's|docker.io/openstackhelm/neutron:ocata|docker.io/openstackhelm/neutron:ocata\n      neutron_sriov_agent: \&neutron_sriov docker.io/openstackhelm/neutron:ocata-sriov-1804\n      neutron_sriov_agent_init: \&neutron_sriov_init docker.io/openstackhelm/neutron:ocata-sriov-1804|g' /root/airship-treasuremap/global/v4.0/software/config/versions.yaml
-sed -i -e 's|neutron_linuxbridge_agent.*|neutron_linuxbridge_agent: *neutron\n        neutron_sriov_agent: *neutron_sriov\n        neutron_sriov_agent_init: *neutron_sriov_init|g' /root/airship-treasuremap/global/v4.0/software/config/versions.yaml
-
 # Portal
 docker stop akraino-portal &> /dev/null
 docker rm akraino-portal &> /dev/null
