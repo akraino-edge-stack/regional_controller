@@ -99,7 +99,6 @@ docker run \
         --restart=unless-stopped \
         --publish 6432:5432 \
         --volume /var/lib/postgres:/var/lib/postgresql/data \
-        --volume /opt/akraino/akraino-j2templates:/opt/akraino/akraino-j2templates \
         --network=bridge \
         --name akraino-postgres \
         --env "POSTGRES_USER=admin" \
@@ -135,7 +134,6 @@ docker exec akraino-ldap /bin/bash -c "ldapadd -v -h $IP:10389 -c -x -D uid=admi
 # Intialize DB
 echo "Initialize DB"
 sleep 30
-docker exec akraino-postgres /bin/bash -c "cp -rf /akraino-j2templates/*  /opt/akraino/akraino-j2templates/"
 docker exec akraino-postgres /bin/bash -c "psql -h localhost -p 5432 -U postgres -f /akraino-db_0524.sql"
 
 
