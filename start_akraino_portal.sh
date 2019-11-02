@@ -77,6 +77,13 @@ echo "Installing required software packages"
 apt-get -q update
 apt-get install -y apt-transport-https sshpass python python-pip python-requests python-yaml python-jinja2 python-netaddr xorriso unzip 2>&1
 
+## CREATE SSH KEYS IF THEY DO NOT EXIST
+echo "Setting up ssh keys for user [$USER] with home [$HOME]"
+if ! [ -f $HOME/.ssh/id_rsa ]; then
+    echo "  Creating rsa key [$HOME/.ssh/id_rsa]"
+    ssh-keygen -t rsa -f $HOME/.ssh/id_rsa -P ""
+fi
+
 echo "Checking that docker is running"
 if ! docker ps; then
     echo "Docker is not running.  Installing docker..."
