@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fe0524e2_b5d2011c",
+        "filename": "INFO.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 45
+      },
+      "writtenOn": "2020-03-31T13:22:37Z",
+      "side": 1,
+      "message": "project lead should be Robert Eby (copy from below)",
+      "revId": "2c36f90be39663f20bfcf66f979ad66ccf9ca525",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dcb118ec_4d97b325",
+        "filename": "INFO.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 45
+      },
+      "writtenOn": "2020-03-31T13:22:37Z",
+      "side": 1,
+      "message": "Timezone should be America/New_York",
+      "revId": "2c36f90be39663f20bfcf66f979ad66ccf9ca525",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "569a79cd_f0980154",
+        "filename": "INFO.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 45
+      },
+      "writtenOn": "2020-03-31T13:22:37Z",
+      "side": 1,
+      "message": "Suman Saha no longer works for AT\u0026T.  He should be removed here.",
+      "revId": "2c36f90be39663f20bfcf66f979ad66ccf9ca525",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ef490dde_2253aea6",
+        "filename": "INFO.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 45
+      },
+      "writtenOn": "2020-03-31T13:22:37Z",
+      "side": 1,
+      "message": "Timezone should be America/New_York",
+      "revId": "2c36f90be39663f20bfcf66f979ad66ccf9ca525",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": true
+    }
+  ]
+}
