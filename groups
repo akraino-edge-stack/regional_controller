@@ -1,4 +1,5 @@
 # UUID                                                                                 	Group Name
 #
 0706f97cf3b2243094a8f24452092769b1065db0                                               	GitHub Replication
+fd81056537e0bd3406d3a5b8d7cfcad08890ee7a                                               	saml/akraino-gerrit-regional_controller-committers
 ldap:cn=akraino-gerrit-regional_controller-committers,ou=Groups,dc=freestandards,dc=org	ldap/akraino-gerrit-regional_controller-committers
